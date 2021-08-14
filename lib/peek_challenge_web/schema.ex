@@ -17,4 +17,15 @@ defmodule PeekChallengeWeb.Schema do
       resolve(&OrdersResolver.list_orders/3)
     end
   end
+
+  mutation do
+    @desc "Create a new order"
+    field :create_order, :order do
+      arg(:description, non_null(:string))
+      arg(:total, :float)
+      arg(:balance_due, :float)
+
+      resolve(&OrdersResolver.create_order/3)
+    end
+  end
 end
