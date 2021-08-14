@@ -27,8 +27,30 @@ defmodule PeekChallenge.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:description, :total, :balance_due])
+    |> cast(attrs, [:description, :total])
     |> cast_embed(:payments)
-    |> validate_required([:total, :balance_due, :payments])
+    |> validate_required([:total, :payments])
+    |> validate_payments()
   end
+
+  defp validate_payments(%{changes: %{payments: payments}} = changeset) do
+    payments
+    |> Enum.map(fn %{changes: %{amount: amount}} -> amount end)
+    |> Enum.sum()
+    |> set_balance(changeset)
+  end
+
+  defp validate_payments(changeset), do: changeset
+
+  defp set_balance(total_amount, %{changes: %{total: total} = changes} = changeset)
+       when total - total_amount >= 0 do
+    %{changeset | changes: Map.put(changes, :balance_due, total - total_amount)}
+  end
+
+  defp set_balance(total_amount, %{changes: %{total: total}} = changeset)
+       when total - total_amount < 0 do
+    %{changeset | valid?: false}
+  end
+
+  defp set_balance(_total_amount, changeset), do: changeset
 end
