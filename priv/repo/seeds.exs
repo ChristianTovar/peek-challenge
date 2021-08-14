@@ -1,11 +1,5 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     PeekChallenge.Repo.insert!(%PeekChallenge.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias PeekChallenge.Orders
+
+for value <- 1..3,
+    do:
+      Orders.create_order(%{description: "This is order ##{value}", total: 100, balance_due: 100})

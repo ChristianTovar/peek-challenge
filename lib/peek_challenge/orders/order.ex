@@ -25,6 +25,6 @@ defmodule PeekChallenge.Orders.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:description, :total, :balance_due])
-    |> validate_required([:description, :total, :balance_due])
+    |> validate_required([:total, :balance_due])
   end
 end
