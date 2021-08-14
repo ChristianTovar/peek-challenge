@@ -16,6 +16,7 @@ defmodule PeekChallengeWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -32,10 +33,10 @@ defmodule PeekChallengeWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PeekChallenge.Repo)
+    :ok = Sandbox.checkout(PeekChallenge.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(PeekChallenge.Repo, {:shared, self()})
+      Sandbox.mode(PeekChallenge.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

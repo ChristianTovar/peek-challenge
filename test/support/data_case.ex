@@ -15,6 +15,7 @@ defmodule PeekChallenge.DataCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -28,10 +29,10 @@ defmodule PeekChallenge.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PeekChallenge.Repo)
+    :ok = Sandbox.checkout(PeekChallenge.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(PeekChallenge.Repo, {:shared, self()})
+      Sandbox.mode(PeekChallenge.Repo, {:shared, self()})
     end
 
     :ok

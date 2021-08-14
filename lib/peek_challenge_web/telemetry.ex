@@ -1,4 +1,6 @@
 defmodule PeekChallengeWeb.Telemetry do
+  @moduledoc "Telemetry configs module."
+
   use Supervisor
   import Telemetry.Metrics
 
