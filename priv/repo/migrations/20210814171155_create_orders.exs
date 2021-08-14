@@ -7,6 +7,7 @@ defmodule PeekChallenge.Repo.Migrations.CreateOrders do
       add :description, :string
       add :total, :float
       add :balance_due, :float
+      add :payments, :jsonb, default: "[]"
 
       timestamps()
     end
