@@ -14,7 +14,7 @@ defmodule PeekChallenge.Orders do
 
   @doc "Gets a single order."
   @spec get_order(String.t()) :: Order.t() | nil
-  def get_order(id), do: Repo.get!(Order, id)
+  def get_order(id), do: Repo.get(Order, id)
 
   @doc "Creates an order."
   @spec create_order :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}

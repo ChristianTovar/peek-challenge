@@ -41,6 +41,7 @@ defmodule PeekChallenge.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:ex_machina, "~> 2.7.0"},
       {:doctor, "~> 0.18.0", only: :dev},
       {:git_hooks, "~> 0.6.3", only: [:dev], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
