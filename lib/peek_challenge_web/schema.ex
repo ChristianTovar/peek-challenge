@@ -43,5 +43,14 @@ defmodule PeekChallengeWeb.Schema do
 
       resolve(&OrdersResolver.create_order/3)
     end
+
+    @desc "Add a payment to existing order"
+    field :add_payment_to_order, :order do
+      arg(:order_id, :string)
+      arg(:amount, non_null(:float))
+      arg(:note, :string)
+
+      resolve(&OrdersResolver.update_order/3)
+    end
   end
 end

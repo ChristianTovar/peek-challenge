@@ -24,11 +24,20 @@ defmodule PeekChallenge.Orders do
     |> Repo.insert()
   end
 
-  @doc "Updates a user."
+  @doc "Updates an order."
   @spec update_order(Order.t(), map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
   def update_order(%Order{} = order, attrs) do
     order
     |> Order.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc "Updates order by id."
+  @spec update_order_by_id(String.t(), map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def update_order_by_id(id, attrs) do
+    id
+    |> get_order()
+    |> Order.payment_changeset(attrs)
     |> Repo.update()
   end
 

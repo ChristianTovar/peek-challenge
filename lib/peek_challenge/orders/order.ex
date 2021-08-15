@@ -19,7 +19,7 @@ defmodule PeekChallenge.Orders.Order do
     field :balance_due, :float
     field :description, :string
     field :total, :float
-    embeds_many :payments, Payment
+    embeds_many :payments, Payment, on_replace: :delete
 
     timestamps()
   end
@@ -33,8 +33,25 @@ defmodule PeekChallenge.Orders.Order do
     |> validate_payments()
   end
 
+  @doc false
+  def payment_changeset(nil, _attrs), do: %Ecto.Changeset{valid?: false}
+
+  def payment_changeset(%{payments: payments, total: total} = order, attrs) do
+    updated_payments = Enum.map(payments, &Map.from_struct/1)
+
+    order
+    |> cast(%{payments: [attrs | updated_payments]}, [])
+    |> cast_embed(:payments)
+    |> append_total(total)
+    |> validate_payments()
+  end
+
+  defp append_total(%{changes: changes} = changeset, total),
+    do: %{changeset | changes: Map.put(changes, :total, total)}
+
   defp validate_payments(%{changes: %{payments: payments}} = changeset) do
     payments
+    |> Enum.filter(fn %{action: action} -> action == :insert end)
     |> Enum.map(fn %{changes: %{amount: amount}} -> amount end)
     |> Enum.sum()
     |> set_balance(changeset)
